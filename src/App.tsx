@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import trLocale from 'date-fns/locale/tr';
 import MultiStepForm from './components/MultiStepForm';
+import SuccessMessage from './components/SuccessMessage';
 
 const theme = createTheme({
   palette: {
@@ -37,14 +38,20 @@ const theme = createTheme({
 });
 
 const App: React.FC = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleFormSubmit = () => {
-    console.log('Form submitted successfully');
+    setIsSubmitted(true);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={trLocale}>
-        <MultiStepForm onFormSubmit={handleFormSubmit} />
+        {isSubmitted ? (
+          <SuccessMessage />
+        ) : (
+          <MultiStepForm onFormSubmit={handleFormSubmit} />
+        )}
       </LocalizationProvider>
     </ThemeProvider>
   );
